@@ -51,6 +51,10 @@ export default function Disclaimer() {
             </View>
           ))}
         </View>
+        <Pressable testID="disclaimer-privacy-link" onPress={() => router.push("/privacy")} style={styles.privacyRow} hitSlop={8}>
+          <Icon name="shield-lock-outline" size={18} color={colors.brandPrimary} />
+          <Text style={styles.privacyText}>Read our privacy note</Text>
+        </Pressable>
         {accepted ? (
           <Text style={styles.done} testID="disclaimer-accepted-text">
             You accepted these terms.
@@ -96,5 +100,7 @@ const useStyles = makeStyles((c) => ({
   pointText: { flex: 1, fontSize: 14, lineHeight: 20, color: c.onSurfaceSecondary },
   agreeRow: { flexDirection: "row", alignItems: "center", gap: 4, paddingRight: 8 },
   agreeText: { flex: 1, fontSize: 14, lineHeight: 20, color: c.onSurface, fontWeight: "600" },
+  privacyRow: { flexDirection: "row", alignItems: "center", gap: 8, minHeight: 44, paddingHorizontal: 4 },
+  privacyText: { fontSize: 14, fontWeight: "700", color: c.brandPrimary },
   done: { fontSize: 14, color: c.success, fontWeight: "700", paddingHorizontal: 4 },
 }));

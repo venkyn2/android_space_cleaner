@@ -26,7 +26,12 @@ User choices: all defaults (media library + folder picker scan, duplicates by si
 - Required first-launch Terms & Disclaimer consent (developer not liable for any loss), gated for all routes in root layout, persisted
 - Terms & disclaimer link on Home; liability note in delete confirm sheet
 
+## Implemented (2026-10-31, round 3)
+- In-app Privacy note (/privacy) linked from Home and Disclaimer (viewable before consent)
+- Hosted privacy policy HTML at GET /api/privacy for Google Play Console
+- Similar/blurry photo detection DEFERRED to v2 per user
+
 ## Backlog
-- P1: Similar (not identical) photo detection (perceptual hash), blurry photo detection
+- P1 (v2): Similar (near-identical) photo detection (dHash) + blurry detection (Laplacian variance) — needs @shopify/react-native-skia on native
 - P1: Cache/app junk overview, scan history
 - P2: Undo via "Recently deleted" staging, scheduled cleanup reminders

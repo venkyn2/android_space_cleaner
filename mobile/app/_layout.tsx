@@ -20,7 +20,7 @@ function ConsentGate({ children }: { children: React.ReactNode }) {
   const router = useRouter();
   const { colors } = useTheme();
   const [ready, setReady] = useState(false);
-  const onDisclaimer = segments[0] === "disclaimer";
+  const onDisclaimer = segments[0] === "disclaimer" || segments[0] === "privacy";
 
   useEffect(() => {
     storage.getItem(DISCLAIMER_KEY, false as boolean).then((v) => {

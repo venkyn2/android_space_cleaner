@@ -1,4 +1,5 @@
 from fastapi import FastAPI, APIRouter, HTTPException
+from fastapi.responses import HTMLResponse
 from dotenv import load_dotenv
 from starlette.middleware.cors import CORSMiddleware
 from motor.motor_asyncio import AsyncIOMotorClient
@@ -92,6 +93,24 @@ def _extract_json(text: str) -> dict:
     if start == -1 or end == -1:
         raise ValueError("No JSON in AI response")
     return json.loads(text[start:end + 1])
+
+
+PRIVACY_HTML = """<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Phone Cleaner - Privacy Policy</title>
+<style>body{font-family:sans-serif;max-width:720px;margin:40px auto;padding:0 16px;color:#121A14;line-height:1.55}h1{color:#4A7C59}h2{font-size:18px;margin-top:28px}</style></head><body>
+<h1>Phone Cleaner - Privacy Policy</h1><p>Last updated October 31, 2026</p>
+<h2>Your files stay on your phone</h2><p>Scanning, duplicate checks, large-file detection, previews and deletion all happen on your device. Your photos, videos, music and documents are never uploaded, copied or shared.</p>
+<h2>Smart AI helper (optional)</h2><p>Only when you tap "Suggest what to delete", the app sends file details (names, sizes, types and ages) to our server and to our AI provider (Anthropic Claude) to create suggestions. File contents are never sent. The suggestions are kept on our server without any account or device identifier.</p>
+<h2>No accounts, ads or tracking</h2><p>Phone Cleaner is free. There are no accounts, no ads, no analytics or tracking tools, and we never sell or share your data.</p>
+<h2>Permissions</h2><p>Photos, Videos and Audio access is used only to find duplicate and large files. Folder access applies only to folders you pick yourself. You can revoke access anytime in Android Settings.</p>
+<h2>Deleting files</h2><p>Nothing is deleted without your review and confirmation. Deleted files are removed permanently from your phone.</p>
+<h2>Contact</h2><p>Questions about privacy? Contact the developer through the Google Play store listing.</p>
+</body></html>"""
+
+
+@api_router.get("/privacy", response_class=HTMLResponse)
+async def privacy_policy():
+    return PRIVACY_HTML
 
 
 @api_router.get("/")

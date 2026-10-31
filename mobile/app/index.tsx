@@ -188,6 +188,14 @@ export default function Home() {
             </View>
             <Icon name="chevron-right" size={22} color={colors.muted} />
           </Pressable>
+          <Pressable testID="privacy-link" onPress={() => router.push("/privacy")} style={({ pressed }) => [styles.linkRow, pressed && styles.pressed]}>
+            <Icon name="shield-lock-outline" size={22} color={colors.brandPrimary} />
+            <View style={{ flex: 1 }}>
+              <Text style={styles.linkText}>Privacy note</Text>
+              <Text style={styles.tileSub}>Your files never leave your phone</Text>
+            </View>
+            <Icon name="chevron-right" size={22} color={colors.muted} />
+          </Pressable>
           <Pressable testID="load-demo-button" onPress={s.loadDemo} style={({ pressed }) => [styles.linkRow, pressed && styles.pressed]}>
             <Icon name="flask-outline" size={22} color={colors.brandPrimary} />
             <View style={{ flex: 1 }}>

@@ -15,6 +15,10 @@ Android users. Public release; friends and family.
 ## Next round (user's words)
 "want it to be free with no Add and ensure that any loss i am not responsible" - free, no ads, and a disclaimer/consent that the developer is not responsible for any loss.
 
+## Next round 2 (user's words)
+"Privacy Note: Add a short in-app privacy page saying files never leave the phone, which Google Play requires"
+(DEFERRED to version 2 per user: "stop, we can do blurring in second version") "Similar Photos: Find near-identical and blurry photos so users free up even more space"
+
 ## Integrations
 - AI text suggestions: Claude Sonnet 5.5 via Emergent universal key
 
