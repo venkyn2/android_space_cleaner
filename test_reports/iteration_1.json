@@ -1,0 +1,45 @@
+{
+  "summary": "Backend /api/ai/suggest 7/7 pytest pass (real Claude call, id filtering, keeper exclusion, bytes sum, 400 empty, 422 invalid). Frontend (375x667 web, demo data): home demo load, tiles, not-scanned empty states (dup/large/ai), duplicates (6 groups, Best badges, select extras/unselect, select all/clear, checkbox vs preview separation, preview modal toggle/close), large files thresholds (10/50/100/250/500/1000 -> 10/10/7/6/5/2 rows, correct), large select/untoggle, AI helper -> 5 suggestions -> Review -> remove item -> confirm sheet -> delete -> success -> home free 9.6->12.6 GB, keeper warning, confirm cancel, review clear/empty. CRITICAL bug found & fixed: AI helper failed on web demo with 422 shown as '[object Object]'.",
+  "backend_issues": {
+    "critical": [],
+    "minor": [
+      {"endpoint": "POST /api/ai/suggest", "issue": "free_bytes/total_bytes typed int; any fractional value from client -> 422 int_from_float. Consider Optional[float] or coercing."}
+    ]
+  },
+  "frontend_issues": {
+    "ui_bugs": [
+      {"component": "ai.tsx error box", "issue": "FastAPI 422 detail is an array; api.ts throws Error(body.detail) -> UI shows '[object Object]'. Stringify/handle array detail.", "testID": "ai-error", "priority": "MEDIUM"},
+      {"component": "ai.tsx suggestion card", "issue": "Pluralization: shows '1 files'", "testID": "ai-suggestion-2", "priority": "LOW"},
+      {"component": "review.tsx success", "issue": "Demo mode success says 'files removed from your phone' (misleading in demo); also '1 files' plural", "testID": "review-success", "priority": "LOW"}
+    ],
+    "integration_issues": [
+      {"flow": "Web demo -> AI helper", "issue": "FIXED by testing agent: DEMO_DISK.free = 9.6*1024*MB was fractional (10307921510.4) -> backend 422. Rounded with Math.round in src/demo.ts.", "affected_testIDs": ["ai-ask-button", "ai-error"]}
+    ],
+    "design_issues": [
+      {"screen": "review", "issues": ["review-item-remove-* button is 28x28 (hitSlop 6 -> ~40px), below 44px target"]},
+      {"screen": "large / preview modal", "issues": ["textTransform capitalize on meta renders '1y Ago', 'Recommended To Keep' – odd casing"]},
+      {"screen": "duplicates", "issues": ["Checkbox at top:-4/right:-4 gets clipped on the last thumbnail in horizontal row"]}
+    ],
+    "react_native_issues": []
+  },
+  "test_report_links": ["/app/backend/tests/test_ai_suggest.py", "/app/test_reports/pytest/pytest_results.xml"],
+  "action_items": [
+    "api.ts: handle array `detail` (422) so error text is readable instead of '[object Object]'; also Math.round free/total bytes before sending",
+    "Backend: accept float or coerce free_bytes/total_bytes to int",
+    "Fix '1 files' pluralization (AI card, review success) and demo-mode success wording",
+    "Increase review remove button touch target to 44px",
+    "scanner.duplicateKeys: fallback key `${w}x${h}:${kind}` when MD5 is skipped (files >300MB, >1500 hashes, or digest error) treats any same-size files as duplicates (folder files are all 0x0:file) -> risk of flagging non-duplicates for deletion. Mark such matches as 'possible' or exclude them."
+  ],
+  "critical_code_review_comments": [
+    "scanner.ts duplicateKeys fallback hash is not content-based: same-size large videos (>300MB, never hashed) or unhashable files get grouped as duplicates – safety risk for a delete tool",
+    "api.ts error parsing assumes string detail",
+    "server.py uses deprecated @app.on_event('shutdown') (works, minor)"
+  ],
+  "updated_files": ["/app/mobile/src/demo.ts (Math.round on DEMO_DISK.free)", "/app/backend/tests/test_ai_suggest.py (new)"],
+  "success_rate": {"backend": "100%", "frontend": "95% (AI flow failed before demo.ts fix; all flows pass after)"},
+  "seed_data_creation": "None; AI suggest tests insert docs in ai_suggestions collection",
+  "retest_needed": false,
+  "should_main_agent_self_test": true,
+  "context_for_next_testing_agent": "Web uses demo data via load-demo-button. AI calls ~5-15s. Click tile-ai-helper after scroll_into_view (below fold). Demo ids demo_0..demo_23; keepers demo_0,3,5,7,14,20.",
+  "rca_of_issue": "AI helper '[object Object]': demo DEMO_DISK.free=9.6*1024*MB is non-integer -> pydantic v2 rejects int field (int_from_float) -> 422 with list detail -> api.ts Error(list) -> '[object Object]'. Mitigated via Math.round in demo.ts; real-device disk ints unaffected."
+}

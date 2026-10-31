@@ -1,0 +1,164 @@
+{
+  "app_name": "Storage Cleaner",
+  "personality": "2 Material You / Expressive LIGHT",
+  "personality_one_liner": "Adaptive, tonal surfaces that create a calm, assuring, and transparent device cleaning experience.",
+  "color": {
+    "surface": "#F7FAF7",
+    "onSurface": "#121A14",
+    "surfaceSecondary": "#EAF2EB",
+    "onSurfaceSecondary": "#1A2D20",
+    "surfaceTertiary": "#DDEADA",
+    "onSurfaceTertiary": "#122117",
+    "surfaceInverse": "#213526",
+    "onSurfaceInverse": "#F7FAF7",
+    "brand": "#4A7C59",
+    "onBrand": "#FFFFFF",
+    "brandPrimary": "#4A7C59",
+    "onBrandPrimary": "#FFFFFF",
+    "brandSecondary": "#B8D8BE",
+    "onBrandSecondary": "#122117",
+    "brandTertiary": "#CDE5D2",
+    "onBrandTertiary": "#122117",
+    "success": "#386641",
+    "onSuccess": "#FFFFFF",
+    "warning": "#B57B2A",
+    "onWarning": "#FFFFFF",
+    "error": "#993B32",
+    "onError": "#FFFFFF",
+    "info": "#4A7C59",
+    "onInfo": "#FFFFFF",
+    "border": "#CDE5D2",
+    "borderStrong": "#4A7C59",
+    "divider": "#CDE5D2",
+    "muted": "#5B7061"
+  },
+  "typography": {
+    "displayFontFamily": "Plus Jakarta Sans",
+    "textFontFamily": "Geist",
+    "scale": {
+      "sm": 12,
+      "base": 14,
+      "lg": 16,
+      "xl": 20,
+      "2xl": 24
+    }
+  },
+  "spacing": {
+    "rule": "Use tonal layering instead of hard cards or heavy shadows. Generous spacing to maintain visual hierarchy without strict borders.",
+    "xs": 4,
+    "sm": 8,
+    "md": 12,
+    "lg": 16,
+    "xl": 24,
+    "2xl": 32,
+    "3xl": 48
+  },
+  "radius_tokens": {
+    "sm": 6,
+    "md": 12,
+    "lg": 20,
+    "pill": 999
+  },
+  "shadow_tier": 0,
+  "navigation": "stack_only",
+  "icon_set": "MaterialCommunityIcons",
+  "glassmorphism": {
+    "enabled": false,
+    "do's": [],
+    "dont's": ["Do not use heavy glass or blur. Stick to solid tonal surfaces in Material You style."]
+  },
+  "platform_libraries": {
+    "glass": {
+      "ios": "expo-glass-effect",
+      "android": "expo-blur",
+      "low_end_android_fallback": "solid surfaceSecondary"
+    },
+    "image": "expo-image",
+    "blur": "expo-blur",
+    "bottom_sheet": "@gorhom/bottom-sheet",
+    "animation": "react-native-reanimated",
+    "gesture": "react-native-gesture-handler"
+  },
+  "screens": [
+    {
+      "name": "Home",
+      "purpose": "Dashboard overview of storage health and entry points to cleaning categories.",
+      "states": {
+        "loading": "Centered spinner over the ring chart.",
+        "empty": "N/A - Storage is always present.",
+        "error": "Error text with 'Retry Scan' button."
+      },
+      "layout": "Top section features a prominent circular ring chart displaying Used vs. Free storage. Below the chart, a 'Smart Clean' hero card displaying total reclaimable space. Bottom section consists of a 2-column grid or list of category tiles (Duplicates, Large Files, AI Suggestions) showing file count and size. Use 'surfaceSecondary' for cards to create a calm, tonal look."
+    },
+    {
+      "name": "DuplicateFinder",
+      "purpose": "Grouped list of similar photos and duplicate files for review.",
+      "states": {
+        "loading": "Skeleton list of photo groupings.",
+        "empty": "Illustration of a clean room, text 'No duplicates found!', primary CTA to return Home.",
+        "error": "Readable message 'Failed to scan duplicates' + Retry CTA."
+      },
+      "layout": "List grouped by similarity. Each group displays horizontal scrolling thumbnails. The AI-recommended 'keeper' is highlighted with a 'Best' badge (using brandTertiary). Selection targets (checkboxes) are strictly separated from preview tap targets to prevent accidental deletion."
+    },
+    {
+      "name": "LargeFiles",
+      "purpose": "List of the largest files with an adjustable size threshold filter.",
+      "states": {
+        "loading": "Skeleton list rows.",
+        "empty": "Text 'No large files found above threshold', CTA to adjust threshold.",
+        "error": "Error message with Retry."
+      },
+      "layout": "Sticky header containing a slider to adjust the threshold (default >50MB). Below is a scrollable vertical list of files sorted by size (largest first). File size should use monospaced numerals for alignment. Selected items accumulate in a bottom sticky action bar (Delete CTA)."
+    },
+    {
+      "name": "AISuggestions",
+      "purpose": "Smart assistant screen suggesting what to delete based on Claude Sonnet logic.",
+      "states": {
+        "loading": "AI thinking animation or spinner.",
+        "empty": "Message: 'Your storage is perfectly optimized!', return CTA.",
+        "error": "Claude API error message + Retry."
+      },
+      "layout": "Conversational or feed-based layout. A top header explaining AI suggestions. A list of suggestion cards (e.g., 'Delete 30 old screenshots to save 120MB') with an embedded 'Review' button. Each card expands into a review mode."
+    },
+    {
+      "name": "PreviewReview",
+      "purpose": "Detailed preview and final confirmation sheet before deletion.",
+      "states": {
+        "loading": "Image loader.",
+        "empty": "N/A",
+        "error": "Failed to load preview."
+      },
+      "layout": "Full-screen media preview with swipe-to-decide (Tinder-style) gestures or a grid overlay. Includes a clear confirmation sheet (using @gorhom/bottom-sheet) when 'Delete' is tapped, summarizing the total space reclaimed and items affected, warning about permanent removal."
+    },
+    {
+      "name": "Settings",
+      "purpose": "App configuration and AI API settings.",
+      "states": {
+        "loading": "Spinner.",
+        "empty": "N/A",
+        "error": "N/A"
+      },
+      "layout": "Simple list layout using 'surfaceSecondary' tinted icon containers. Toggles for 'Scan on startup', 'Include system files', and an input field for the Claude API Key."
+    }
+  ],
+  "images": {
+    "empty_state_clean": {
+      "url": "https://images.unsplash.com/photo-1758486561455-ebd0d3ba7423?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA1Mjh8MHwxfHNlYXJjaHwxfHxlbXB0eSUyMG1pbmltYWxpc3QlMjByb29tfGVufDB8fHx8MTc5MzQ2Mjg3Nnww&ixlib=rb-4.1.0&q=85",
+      "alt": "Clean and empty minimalist room with a chair"
+    },
+    "placeholder_photo": {
+      "url": "https://images.unsplash.com/photo-1570641963303-92ce4845ed4c?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2NjZ8MHwxfHNlYXJjaHwxfHxtb3VudGFpbiUyMGxhbmRzY2FwZSUyMHBob3RvZ3JhcGh5fGVufDB8fHx8MTc5MzQ2Mjg3Nnww&ixlib=rb-4.1.0&q=85",
+      "alt": "Mountain landscape photography"
+    }
+  },
+  "instructions_to_main_agent": [
+    "Strictly adhere to the Material You / Expressive LIGHT personality using the moss green and botanical tonal palette. Do NOT use any banned colors like blue, indigo, purple, or navy.",
+    "Do NOT use heavy shadows, borders, or glassmorphism. Rely on tonal spacing and `surfaceSecondary` or `surfaceTertiary` for cards and nesting.",
+    "Implement the 'Home' screen as a dashboard with a ring chart for storage and priority-bucketed category cards based on Mobbin research.",
+    "Ensure 'PreviewReview' and 'DuplicateFinder' clearly separate the 'select' target from the 'preview' target to avoid accidental deletions.",
+    "When displaying AI suggestions, clearly mark recommended 'keepers' with a 'Best' badge to reduce cognitive load.",
+    "Keep primary CTAs sticky at the bottom for scrollable screens with an action, using `surface` container as base.",
+    "All data metrics and file sizes should use a monospace font variant if possible, or align properly for quick scanning.",
+    "The app is Android-first: employ MaterialCommunityIcons filled/outlined consistently, avoid iOS specific patterns where they clash with Material 3."
+  ]
+}
